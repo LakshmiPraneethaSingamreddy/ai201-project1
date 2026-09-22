@@ -18,81 +18,42 @@ pipeline earns credit; *"80% seemed reasonable"* does not.
 ---
 
 ## 1. Retrieved chunks contain the answer
-
 For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
 **Why this target:**
-<!-- e.g. "One of my questions is about a topic only two documents mention, so
-     I expect that one to be hard." -->
+"One of my questions is about a topic only two documents mention, so I expect that one to be hard." 
 
 ---
 
 ## 2. Every answer names a source
-
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-<!-- Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be? -->
-
+Every retrieved result already includes the source document names from where the chunks are taken from.
 ---
 
 ## 3. The relevance gate stops out-of-corpus questions
-
 When I ask a question my documents clearly don't cover, the relevance gate
 stops it and the system returns "I don't have enough information about that" —
 in at least 4 of 5 tries.
 
-<!-- The five questions are the ones in `OUT_OF_SCOPE` at the bottom of
-     `questions.py`, and `run_eval.py` puts them through the gate and writes
-     what happened into your run log. Swap them for your own if you'd rather —
-     just keep five of them, or the "4 of 5" above has nothing to be 4 of. -->
-
 **Why this target:**
-<!-- What did your distances look like when you set the cutoff in Milestone 4?
-     Was there a clean gap, or did the two groups overlap? -->
-
+For the out of context questions, the best distance is always greater than cutoff, so the relevance gate stops the RAG from giving wrong answer, instead it return "I don't have enough information about that"
 ---
 
-## 4. Something about your chunks
-
-<!-- YOU WRITE THIS ONE.
-
-     How would you know if your chunks were the right size? Name something
-     countable or observable.
-
-     Examples of the right shape — don't copy these, they should come from
-     what you actually saw in Milestone 3:
-       - "At least 4 of 5 sampled chunks read as a complete thought, with no
-          sentence cut in half at either end."
-       - "No chunk is shorter than 200 characters, since anything below that
-          in my corpus turned out to be a heading with no content under it." -->
-
-
+## 4. Right Chunking preserves multi-paragraph answers
+For atleast 3 out of 5 questions about the city_guides where answers are present across multiple paragraphs, the system should give an answer that includes all of the required facts. 
 
 **Why this target:**
-
-
-
+The city guides documents are longer compared to the campus_life and advice_threads where the answers can be found in a one or two sentences. When the chunks are not the right size, related information can be seperated and the answer might be incomplete.
 ---
 
-## 5. Your choice
-
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. It could be about
-     speed, about refusals, about a particular kind of question your corpus
-     handles badly, about source attribution being correct rather than merely
-     present — anything, as long as it names a number or an observable
-     outcome. -->
-
-
+## 5. Answers are given within 10 seconds on local computer 
+For all 5 of my 5 test questions, the answer are given with in the 10 seconds of being submitted.
 
 **Why this target:**
-
-
-
+The system is fast enough to give answers for the questions about the corpora even when the answers are either present in a single sentence or spread across multiple paragraphs. If we ask out of bound questions, it is still replying within 10 seconds with the answer " I don't have enough information about that".
 ---
 
 <!-- ─────────────────────────────────────────────────────────────────────────
