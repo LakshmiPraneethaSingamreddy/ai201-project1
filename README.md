@@ -29,8 +29,16 @@
 
 ## Chunking Strategy
 
-**Chunk size:**
-**Overlap:**
+**Chunk size:** for documents having less tha 650 characters - chunk size is the size of document and for documents having more than 650 charcters, the chunk size is the max(average_paragrapgh_length * 4, 400)
+**Overlap:** is 100 characters
+
+The documents in the advice_threads and campus_life corpora has a 543 and 317 characters per each document respectively on average. Since in both of these corpora the answer is retrieved from the whole document where the answer is present in one or two sentences. So, to include the complete answer I have considered 650 characters as the size of chunk for the advice_threads and campus_life corpora.
+
+The documents in the city_guides have 2068 characters on average per document, but taking a chunk size that big the answer might get buried. So I want to go for an approach where the chunk itself can answer to some question. I want to split the paragrapghs such that they are associated with the title(What the paragrapgh is about) and at the same time I don't want to split the paragrapgh in middle(where the rest of the part might contain some part of the answer that makes the answer complete)
+
+So, If the length of document is <650(chunk size), I have counted the no.of paragrapghs in that document and then calculated the average length of each paragrapgh. Then I have determined the chunksize by taking the maximum of (average_paragrapgh_length*4, 400) to ensure that the chunksize should be minimum of 400 characters. And also to reduce the missing of context during chunking I have taken overlap of 100 characters.
+
+
 
 <!-- What about YOUR documents made you pick these numbers? Short posts and
      long sectioned guides don't want the same chunking, and "800 seemed
@@ -55,28 +63,96 @@
 
 **Chunk 1** — source: `` — produced by: ``
 
-```
-```
+======================================================================
+Chunk 1  |  source: guide_accessibility.md#0  |  produced by: chunker.py::split_documents
+======================================================================
+# Getting around the region with limited mobility
+
+An honest assessment rather than a promotional one. Some of these places are
+difficult and it is better to know in advance.
+
+## Straightforward
+
+**Thornby Wells** is the easiest town in the region. It is flat, compact, and
+everything is within three minutes of everything else. Parking is free for two
+hours anywhere in town and the station is central. The pump room and gardens
+are level throughout.
+
+**Marchwood** has a modern tram network with level boarding on all four lines,
+running every 8 minutes on weekdays. The city museum and covered market are both
+step-free. The distances between districts are the main consideration.
 
 **Chunk 2** — source: `` — produced by: ``
+======================================================================
+Chunk 2  |  source: guide_corry_vale.md#1  |  produced by: chunker.py::split_documents
+======================================================================
+## Getting around
 
-```
-```
+Nothing within the valley is walkable from anything else — the villages are two to four miles apart. There is one taxi, based in the largest village, and it must be booked a day ahead. Most visitors drive between villages and walk the footpaths in between.
+
+## Eat and drink
+
+One pub in the largest village serves food seven days a week. A second, in the third village, opens Thursday to Sunday. There is a farm shop at the valley mouth that sells bread, cheese and little else, and it closes at 4pm. Bring supplies; this is not a place with options.
+
+## What to see
+
+The valley itself is the attraction. The footpath network is dense and well marked, and a circuit taking in three of the four villages is about nine miles with 500 metres of ascent. The chapel in the second village is 12th century and always unlocked.
+
+## Where to stay
+
+Perhaps thirty beds in the entire valley, spread across two pubs and a handful of farmhouse rooms. In summer these are booked months ahead. Camping is permitted on two marked fields and nowhere else.
 
 **Chunk 3** — source: `` — produced by: ``
+======================================================================
+Chunk 3  |  source: guide_givens_mill.md#1  |  produced by: chunker.py::split_documents
+======================================================================
+## Eat and drink
 
-```
-```
+A tearoom attached to the mill, open 10 to 4 daily except Tuesdays, which sells bread made from the flour ground twenty metres away and is the reason most people come. One pub, food served lunchtimes and Thursday to Saturday evenings.
+
+## What to see
+
+The mill runs tours on the hour from 11 to 3 and the machinery is operating during them, which is loud and much more impressive than a static exhibit. The church has a Saxon doorway. The river walk downstream reaches Brightwater in about three hours.
+
+## Where to stay
+
+Nothing in the village itself. The nearest rooms are in Brightwater, which is close enough that this is not really a problem — most people come for a half day.
+
+## When to go
+
+The mill runs March to November and is closed entirely in winter. Late spring is the best time. Summer Saturdays are busy enough that the car parkbecomes the limiting factor; come on a weekday if you can.
 
 **Chunk 4** — source: `` — produced by: ``
+======================================================================
+Chunk 4  |  source: guide_marchwood.md#1  |  produced by: chunker.py::split_documents
+======================================================================
+## Getting around
 
-```
-```
+A tram network of four lines, running every 8 minutes on weekdays and every 15 at weekends, until midnight. A day ticket costs less than two single fares and nobody tells you this at the machine. The centre is walkable but the interesting districts are not adjacent to each other.
+
+## Eat and drink
+
+The best eating is in the Northgate district, a 12-minute tram ride from the station, where about thirty restaurants sit within four streets. The area immediately around the station is uniformly poor and expensive. Marchwood keeps later hours than anywhere else in the region — kitchens serve until 10:30pm, and until midnight on Fridays and Saturdays.
+
+## What to see
+
+The city museum is free and genuinely excellent, particularly the industrial floor. The covered market has operated since 1863 and is at its best on a weekday morning. The canal walk from Northgate to the old lock is 40 minutes and is the thing residents recommend when asked.
+
 
 **Chunk 5** — source: `` — produced by: ``
+======================================================================
+Chunk 5  |  source: guide_seasons.md#0  |  produced by: chunker.py::split_documents
+======================================================================
+# When to visit the region
 
-```
-```
+## Spring, March to May
+
+Days lengthen quickly and businesses that closed for winter reopen through
+March and April. By May everything is open and the weather is reliable enough
+to plan around. Late May is arguably the best week of the year in Brightwater —
+long days, everything running, and the students gone.
+
+The Kestrelford Saturday market builds back to full size through April.
 
 ## Sample Answer
 

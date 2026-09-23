@@ -97,7 +97,70 @@ def split_documents(documents: list[Document]) -> list[Chunk]:
       - Would splitting on paragraph breaks keep more thoughts intact than
         splitting on a character count?
     """
-    return fallback_split(documents)
+    chunks: list[Chunk] = []
+
+    for doc in documents:
+        paragraphs = [
+            paragraph.strip()
+            for paragraph in doc.text.split("\n\n")
+            if paragraph.strip()
+        ]
+
+        sections: list[str] = []
+        paragraph_index = 0
+        while paragraph_index < len(paragraphs):
+            paragraph = paragraphs[paragraph_index]
+            if paragraph.startswith("#") and paragraph_index + 1 < len(paragraphs):
+                sections.append(
+                    f"{paragraph}\n\n{paragraphs[paragraph_index + 1]}"
+                )
+                paragraph_index += 2
+            else:
+                sections.append(paragraph)
+                paragraph_index += 1
+
+        if len(doc.text) <= 650:
+            pieces = [doc.text.strip()]
+        else:
+            average_paragraph = len(doc.text) // len(sections)
+            target_size = max(400, average_paragraph * 4)
+            overlap_size = 100
+            pieces = []
+            current: list[str] = []
+            current_size = 0
+
+            for section in sections:
+                added_size = len(section) + (2 if current else 0)
+                if current and current_size + added_size > target_size:
+                    pieces.append("\n\n".join(current))
+                    overlap: list[str] = []
+                    overlap_total = 0
+                    for previous in reversed(current):
+                        overlap.insert(0, previous)
+                        overlap_total += len(previous) + 2
+                        if overlap_total >= overlap_size:
+                            break
+                    current = overlap
+                    current_size = sum(len(piece) for piece in current) + 2 * (
+                        len(current) - 1
+                    )
+                current.append(section)
+                current_size += len(section) + (2 if len(current) > 1 else 0)
+
+            if current:
+                pieces.append("\n\n".join(current))
+
+        for index, piece in enumerate(pieces):
+            chunks.append(
+                Chunk(
+                    text=piece,
+                    source=doc.source,
+                    index=index,
+                    produced_by="chunker.py::split_documents",
+                )
+            )
+
+    return chunks
 
 
 def describe(chunks: list[Chunk]) -> str:
