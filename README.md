@@ -20,7 +20,9 @@
 # Unit 1
 
 ## What This Does
+For this project, I used documents from all three corpora: advice threads, campus life, and city guides. I initially misunderstood the requirement to choose only one corpus, so I selected questions related to each corpus and configured the system to answer them using the relevant indexed documents. Because the corpora contain different types of documents, my document-splitting strategy is adapted to their structure. I plan to redesign the project around a single corpus for the next assignment.
 
+When a question is related to the indexed information, the system retrieves relevant documents and generates an answer grounded in those documents. For questions outside the available information, it responds, "I don't have enough information about that," rather than making up an answer.
 <!-- Three or four sentences. Which corpus you picked, and the kinds of
      questions your system answers. Write it for someone who has never seen
      this repo.
@@ -205,18 +207,10 @@ The gap is from (0.5) t0 (0.8). I have choosen the 0.6 as cutoff because the bes
 I did not change the **GROUNDING_INSTRUCTION** because it is working well and only giving the answers that are pesent in the corpus.
 ## How I Used AI
 
-<!-- Two specific moments. For each: what you asked for, what came back, and
-     what you changed about it.
 
-     "I asked Claude to write the chunking function from my notes. It ignored
-     the overlap, so I added that myself" is the level of detail we're after.
-     "I used AI to help me code" is not.
+**1.** I asked Copilot to help me generate the chunking function for my system. The first version did not include an overlap value because I had not specified one. When I later asked about the overlap-count variable, Copilot added an arbitrary value instead of choosing one based on my documents. I reviewed the recommendation and explicitly changed overlap_count to 100 to match my chunking strategy.
 
-     Milestone 5. -->
-
-**1.**
-
-**2.**
+**2.** I also used Copilot throughout the project to know about the unfamiliar terms. This helped me understand the decisions in my system instead of moving forward without knowing why they were needed.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
