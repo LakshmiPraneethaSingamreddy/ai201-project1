@@ -160,11 +160,19 @@ The Kestrelford Saturday market builds back to full size through April.
      visible. Milestone 4. -->
 
 **Question:**
+     python app.py --corpus advice_threads ask "Is it weird to go to office hours without a specific question?"
 
 **Answer:**
 
-```
-```
+     (best distance 0.390, cutoff 0.6)
+
+     No, it is not weird to go to office hours with no specific question; it is completely normal to say you are following the lectures but do not yet understand the shape of it. 
+
+     Source: `thread_office_hours_etiquette.txt`
+
+     Sources retrieved: thread_commuting.txt, thread_late_work.txt, thread_office_hours_etiquette.txt, thread_professor_email.txt, thread_study_spots.txt
+
+     1 model calls this session, 943 tokens (890 in, 53 out)
 
 **My relevance cutoff:**
 
@@ -176,11 +184,25 @@ The Kestrelford Saturday market builds back to full size through April.
      here — the table below wants all ten rows.
 
      Milestone 4. -->
+     Relevance cutoff I picked - 0.6
 
-| Question | In corpus? | Best distance |
-|---|---|---|
-|  |  |  |
+| Question                                                        | In corpus? | Best distance |
+|-----------------------------------------------------------------|------------|---------------|
+| How far in advance should I book to get my adviser hold lifted? |  Yes       | 0.500         |
+| How many black-and-white pages does the printing quota cover?   |  Yes       | 0.322         |
+| What is there to see in Pellew sands?                           |  Yes       | 0.418         |
+|  How late is the library open during term?                      |  Yes       | 0.500         |
+| Is it weird to go to office hours without a specific question?  |  Yes       | 0.390         |
+| What is the capital of Mongolia?                                |  No        | 0.825         |
+| How do I change the oil in a diesel engine?                     |  No        | 0.934         |
+| Who won the 1994 World Cup?                                     |  No        | 0.886         |
+| What is the recommended dosage of ibuprofen for a headache?     |  No        | 0.844         |
+| How do I write a for loop in Rust?                              |  No        | 0.896         |
 
+
+The gap is from (0.5) t0 (0.8). I have choosen the 0.6 as cutoff because the best_distance to answers for my questions that are in my corpus are ranging from 0.32 to 0.50. And for the out of the scope questions the best_distance is ranging from 0.8 to 0.93. So, I want to keep my cutoff as the 0.6 percent only so that the neither refuses questions it has answers to nor make things up for the questions it doesn't ahve answers for.
+
+I did not change the **GROUNDING_INSTRUCTION** because it is working well and only giving the answers that are pesent in the corpus.
 ## How I Used AI
 
 <!-- Two specific moments. For each: what you asked for, what came back, and
